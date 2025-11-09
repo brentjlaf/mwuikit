@@ -1,10 +1,16 @@
-(async function () {
-      try {
-      const response = await fetch('./data.json');
-      if (!response.ok) {
-        throw new Error(`Failed to load data.json: ${response.status} ${response.statusText}`);
-      }
-      const data = await response.json();
+(function () {
+  try {
+    const dataScript = document.getElementById('pagesConfig');
+    if (!dataScript) {
+      throw new Error('Missing pages configuration element');
+    }
+
+    let data;
+    try {
+      data = JSON.parse(dataScript.textContent || '{}');
+    } catch (parseError) {
+      throw new Error(`Failed to parse pages configuration: ${parseError.message}`);
+    }
 
       const DEFAULT_AUTHOR_COLOR = data.defaultAuthorColor ?? 'slate';
       const AUTHOR_DETAILS = data.authorDetails ?? {};
