@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Kit – MW UI Kit</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DFL4KCaEhfsfdpyhj2l8ePNgm6kKiC9JIhbnoAVnX1nvUs61f7o+Jfm6D/Ebhko116IhVQbKXtEOi33ECszm2g=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <style>
+    :root {
+      color-scheme: light;
+      --uikit-bg: #f5f7fb;
+      --uikit-card-bg: #ffffff;
+      --uikit-border: #e0e6f1;
+      --uikit-muted: #6b7280;
+      --uikit-text: #111827;
+      --uikit-primary: #2563eb;
+      --uikit-secondary: #6366f1;
+      --uikit-success: #22c55e;
+      --uikit-warning: #f59e0b;
+      --uikit-danger: #ef4444;
+      --uikit-radius: 16px;
+      --uikit-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+      --uikit-grid-gap: 20px;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--uikit-bg);
+      color: var(--uikit-text);
+    }
+
+    .ui-shell {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      padding: 40px clamp(24px, 5vw, 64px) 80px;
+      box-sizing: border-box;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      align-items: center;
+    }
+
+    .hero-card {
+      background: var(--uikit-card-bg);
+      border-radius: var(--uikit-radius);
+      padding: 32px;
+      border: 1px solid rgba(99, 102, 241, 0.16);
+      box-shadow: var(--uikit-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .hero-card h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 42px);
+      letter-spacing: -0.02em;
+    }
+
+    .hero-card p {
+      margin: 0;
+      color: var(--uikit-muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.08);
+      color: var(--uikit-primary);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .layout-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--uikit-grid-gap);
+    }
+
+    .section-card {
+      background: var(--uikit-card-bg);
+      border-radius: var(--uikit-radius);
+      border: 1px solid var(--uikit-border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .section-card header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .section-card header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .section-card header span {
+      color: var(--uikit-muted);
+      font-size: 14px;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 16px;
+    }
+
+    .swatch {
+      background: var(--color, #000);
+      border-radius: 18px;
+      padding: 18px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+      min-height: 120px;
+    }
+
+    .swatch strong {
+      font-size: 16px;
+    }
+
+    .swatch span {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .typography-samples {
+      display: grid;
+      gap: 18px;
+    }
+
+    .typography-samples h1,
+    .typography-samples h2,
+    .typography-samples h3,
+    .typography-samples p,
+    .typography-samples small {
+      margin: 0;
+    }
+
+    .button-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .mw-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .mw-button:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.25);
+      outline-offset: 2px;
+    }
+
+    .mw-button.primary {
+      background: var(--uikit-primary);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.28);
+    }
+
+    .mw-button.secondary {
+      background: rgba(99, 102, 241, 0.12);
+      color: var(--uikit-secondary);
+      border-color: rgba(99, 102, 241, 0.35);
+    }
+
+    .mw-button.ghost {
+      background: transparent;
+      border-color: var(--uikit-border);
+      color: var(--uikit-muted);
+    }
+
+    .mw-button.danger {
+      background: var(--uikit-danger);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(239, 68, 68, 0.25);
+    }
+
+    .mw-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.14);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--uikit-muted);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select,
+    textarea {
+      border-radius: 12px;
+      border: 1px solid var(--uikit-border);
+      padding: 12px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border 0.2s ease, box-shadow 0.2s ease;
+      background: var(--uikit-card-bg);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: rgba(37, 99, 235, 0.6);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .badge.success {
+      background: rgba(34, 197, 94, 0.18);
+      color: #166534;
+    }
+
+    .badge.warning {
+      background: rgba(245, 158, 11, 0.18);
+      color: #92400e;
+    }
+
+    .badge.info {
+      background: rgba(37, 99, 235, 0.18);
+      color: #1d4ed8;
+    }
+
+    .component-preview {
+      display: grid;
+      gap: 18px;
+    }
+
+    .card-preview {
+      border-radius: 18px;
+      border: 1px solid var(--uikit-border);
+      padding: 24px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(241, 245, 249, 0.7));
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card-preview h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .card-preview p {
+      margin: 0;
+      color: var(--uikit-muted);
+      line-height: 1.5;
+    }
+
+    .card-preview footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .toggle-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .toggle {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      width: 52px;
+      height: 28px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: var(--uikit-border);
+      border-radius: 999px;
+      transition: background 0.2s ease;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.25);
+      transition: transform 0.2s ease;
+    }
+
+    .toggle input:checked + .toggle-track {
+      background: rgba(37, 99, 235, 0.35);
+    }
+
+    .toggle input:checked + .toggle-track + .toggle-thumb {
+      transform: translateX(24px);
+      background: var(--uikit-primary);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+    }
+
+    .table thead {
+      background: rgba(37, 99, 235, 0.08);
+    }
+
+    .table th,
+    .table td {
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(224, 230, 241, 0.8);
+    }
+
+    .table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .footer-note {
+      margin-top: 12px;
+      color: var(--uikit-muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 640px) {
+      .section-card header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="ui-shell">
+    <header>
+      <div class="hero-card">
+        <h1>MW UI Kit</h1>
+        <p>
+          A distilled collection of the foundational building blocks that power the Pages
+          dashboard experience. Use these tokens, components, and examples to build consistent,
+          accessible product surfaces.
+        </p>
+        <div class="hero-meta">
+          <span class="meta-pill"><i class="fa-regular fa-gem"></i> Design tokens</span>
+          <span class="meta-pill"><i class="fa-solid fa-layer-group"></i> Component states</span>
+          <span class="meta-pill"><i class="fa-regular fa-eye"></i> Accessibility first</span>
+        </div>
+      </div>
+      <div class="hero-card" style="gap: 20px;">
+        <div class="component-preview">
+          <div class="card-preview">
+            <h3>Content strategy workshop</h3>
+            <p>Collaborate with the content team to plan the Q3 refresh. Includes research, IA,
+              and review milestones.</p>
+            <footer>
+              <span class="badge info"><i class="fa-solid fa-sparkles"></i> Active sprint</span>
+              <button class="mw-button primary"><i class="fa-solid fa-arrow-right"></i> View</button>
+            </footer>
+          </div>
+          <div class="toggle-row">
+            <label class="toggle">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+            <label class="toggle">
+              <input type="checkbox">
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+            <div class="badge success"><i class="fa-solid fa-circle-check"></i> Ready</div>
+            <div class="badge warning"><i class="fa-solid fa-clock"></i> Pending</div>
+          </div>
+        </div>
+        <p class="footer-note">
+          Browse component usage below. Classes share naming with the dashboard and inherit
+          baseline typography, spacing, and motion from <code>mw-base.css</code> and
+          <code>mw-components.css</code>.
+        </p>
+      </div>
+    </header>
+
+    <section class="section-card">
+      <header>
+        <h2>Color palette</h2>
+        <span>Semantic usage for product surfaces</span>
+      </header>
+      <div class="swatches">
+        <div class="swatch" style="--color: var(--uikit-primary);">
+          <strong>Primary</strong>
+          <span>#2563EB</span>
+        </div>
+        <div class="swatch" style="--color: var(--uikit-secondary);">
+          <strong>Secondary</strong>
+          <span>#6366F1</span>
+        </div>
+        <div class="swatch" style="--color: var(--uikit-success);">
+          <strong>Success</strong>
+          <span>#22C55E</span>
+        </div>
+        <div class="swatch" style="--color: var(--uikit-warning);">
+          <strong>Warning</strong>
+          <span>#F59E0B</span>
+        </div>
+        <div class="swatch" style="--color: var(--uikit-danger);">
+          <strong>Danger</strong>
+          <span>#EF4444</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <header>
+        <h2>Typography scale</h2>
+        <span>Headings, body copy, and annotations</span>
+      </header>
+      <div class="typography-samples">
+        <h1>Heading XL – Inter 42 / 48</h1>
+        <h2>Heading LG – Inter 32 / 40</h2>
+        <h3>Heading MD – Inter 24 / 30</h3>
+        <p>Body text – Inter 16 / 24. Balanced contrast, tuned for dashboard surfaces.</p>
+        <small>Caption – Inter 13 / 20</small>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <header>
+        <h2>Buttons</h2>
+        <span>Primary actions, secondary emphasis, and destructive states</span>
+      </header>
+      <div class="button-grid">
+        <button class="mw-button primary"><i class="fa-solid fa-plus"></i> Create page</button>
+        <button class="mw-button secondary"><i class="fa-regular fa-copy"></i> Duplicate</button>
+        <button class="mw-button ghost"><i class="fa-regular fa-star"></i> Watch</button>
+        <button class="mw-button danger"><i class="fa-solid fa-trash"></i> Delete</button>
+        <button class="mw-button ghost"><i class="fa-solid fa-filter"></i> Filters</button>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <header>
+        <h2>Form elements</h2>
+        <span>Inputs, selects, and text areas</span>
+      </header>
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="title">Page title</label>
+          <input type="text" id="title" placeholder="Write something descriptive…">
+        </div>
+        <div class="form-field">
+          <label for="owner">Owner</label>
+          <select id="owner">
+            <option>Choose a teammate</option>
+            <option>Alex Murphy</option>
+            <option>Casey Lee</option>
+            <option>Jordan Blake</option>
+          </select>
+        </div>
+        <div class="form-field" style="grid-column: span 2;">
+          <label for="description">Description</label>
+          <textarea id="description" placeholder="Outline purpose, target audience, and review cadence."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <header>
+        <h2>Badges & toggles</h2>
+        <span>States and quick actions</span>
+      </header>
+      <div class="badge-row">
+        <span class="badge info"><i class="fa-solid fa-paper-plane"></i> Scheduled</span>
+        <span class="badge success"><i class="fa-solid fa-circle-check"></i> Published</span>
+        <span class="badge warning"><i class="fa-solid fa-circle-exclamation"></i> Draft</span>
+      </div>
+      <div class="toggle-row">
+        <label class="toggle">
+          <input type="checkbox" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+        <button class="mw-button ghost"><i class="fa-solid fa-bolt"></i> Automations</button>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <header>
+        <h2>Table layout</h2>
+        <span>Ideal for index views and reporting</span>
+      </header>
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Status</th>
+              <th>Owner</th>
+              <th>Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Brand guidelines refresh</td>
+              <td><span class="badge success"><i class="fa-solid fa-circle-check"></i> Published</span></td>
+              <td>Alex Murphy</td>
+              <td>2 hours ago</td>
+            </tr>
+            <tr>
+              <td>Q3 campaign brief</td>
+              <td><span class="badge warning"><i class="fa-solid fa-circle-exclamation"></i> Draft</span></td>
+              <td>Casey Lee</td>
+              <td>Yesterday</td>
+            </tr>
+            <tr>
+              <td>Product roadmap</td>
+              <td><span class="badge info"><i class="fa-solid fa-paper-plane"></i> Scheduled</span></td>
+              <td>Jordan Blake</td>
+              <td>Aug 12</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
