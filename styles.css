@@ -34,6 +34,25 @@
       box-sizing: border-box;
     }
 
+    .pages-error {
+      margin: 0;
+      padding: 12px 16px;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      border-radius: 12px;
+      font-weight: 600;
+      max-width: 960px;
+      align-self: center;
+      width: calc(100% - 64px);
+      box-sizing: border-box;
+      display: none;
+    }
+
+    .pages-error.is-visible {
+      display: block;
+    }
+
     .pages-toolbar {
       position: sticky;
       top: 0;

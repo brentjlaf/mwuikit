@@ -1,10 +1,31 @@
 (async function () {
+      const errorBanner = document.getElementById('pagesError');
+
+      const showInitializationError = (message) => {
+        if (errorBanner) {
+          errorBanner.textContent = message;
+          errorBanner.classList.add('is-visible');
+          errorBanner.removeAttribute('hidden');
+        }
+      };
+
+      const loadConfiguration = async () => {
+        if (window.location.protocol === 'file:') {
+          throw new Error(
+            'Browser security restrictions block loading data.json when opening this file directly. '
+              + 'Run a local web server (for example, `npx http-server`) and open pages.html over http.'
+          );
+        }
+
+        const response = await fetch('./data.json');
+        if (!response.ok) {
+          throw new Error(`Failed to load data.json: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      };
+
       try {
-      const response = await fetch('./data.json');
-      if (!response.ok) {
-        throw new Error(`Failed to load data.json: ${response.status} ${response.statusText}`);
-      }
-      const data = await response.json();
+      const data = await loadConfiguration();
 
       const DEFAULT_AUTHOR_COLOR = data.defaultAuthorColor ?? 'slate';
       const AUTHOR_DETAILS = data.authorDetails ?? {};
@@ -3859,5 +3880,6 @@
       initialise();
     } catch (error) {
       console.error('Failed to initialize Pages interface', error);
+      showInitializationError(error.message);
     }
   })();
