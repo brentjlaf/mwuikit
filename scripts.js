@@ -2407,7 +2407,7 @@
       }
 
       function configureActionMenus() {
-        const disableInTrash = ['publish', 'unpublish', 'schedule', 'move'];
+        const disableInTrash = ['publish', 'unpublish', 'schedule', 'move', 'duplicate', 'settings'];
 
         actionMenus.forEach((menu) => {
           const dropdown = menu.querySelector('[data-action-menu-dropdown]');
@@ -2447,7 +2447,7 @@
             if (!deleteForeverButton) {
               deleteForeverButton = createActionMenuButton({
                 action: 'delete-permanently',
-                label: 'Delete permanently',
+                label: 'Permanently delete',
                 icon: 'fa-circle-xmark',
                 destructive: true,
               });
