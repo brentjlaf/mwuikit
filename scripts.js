@@ -163,6 +163,10 @@
       const clearSelectionButton = document.getElementById('clearSelectionButton');
       const bulkActionButtons = document.querySelectorAll('[data-bulk-action]');
       const sortButtons = document.querySelectorAll('.sort-button');
+      const trashActionsBar = document.querySelector('[data-trash-actions]');
+      const trashActionButtons = trashActionsBar
+        ? Array.from(trashActionsBar.querySelectorAll('[data-trash-action]'))
+        : [];
 
       const folderSettingsDialog = document.getElementById('folderSettingsDialog');
       const folderDialogClose = folderSettingsDialog?.querySelector('.dialog-close');
@@ -1477,7 +1481,13 @@
           }
           const row = folderRowById.get(folderId) || null;
           activeFolderIdForDialog = folderId;
-          activeFolderNameForDialog = getFolderNameFromRow(row);
+          const fallbackName =
+            folderId === '_root'
+              ? 'Root'
+              : folderId === 'trash'
+              ? 'Trash'
+              : folderId || 'this folder';
+          activeFolderNameForDialog = row ? getFolderNameFromRow(row) : fallbackName;
           lastTriggerForDialog = trigger instanceof HTMLElement ? trigger : null;
           if (form instanceof HTMLFormElement) {
             form.reset();
@@ -2169,6 +2179,7 @@
 
         updateGroupRowsVisibility();
         updateFolderCounts();
+        syncTrashActionsVisibility();
         updateCounts(baseMatches);
         renderChips();
         updateFolderCheckboxes();
@@ -2379,6 +2390,92 @@
       renderReportFilters();
       syncCreateButtonState();
       syncFilterControls();
+
+      function createActionMenuButton({ action, label, icon, destructive = false }) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = destructive ? 'action-menu-item is-destructive' : 'action-menu-item';
+        button.setAttribute('role', 'menuitem');
+        button.dataset.menuAction = action;
+        const iconElement = document.createElement('i');
+        iconElement.className = `fa-solid ${icon}`;
+        iconElement.setAttribute('aria-hidden', 'true');
+        const labelElement = document.createElement('span');
+        labelElement.textContent = label;
+        button.append(iconElement, labelElement);
+        return button;
+      }
+
+      function configureActionMenus() {
+        const disableInTrash = ['publish', 'unpublish', 'schedule', 'move'];
+
+        actionMenus.forEach((menu) => {
+          const dropdown = menu.querySelector('[data-action-menu-dropdown]');
+          const row = menu.closest('.page-row');
+          if (!dropdown || !row) {
+            return;
+          }
+
+          const status = row.dataset.status || '';
+          const trashButton = dropdown.querySelector('[data-menu-action="trash"]');
+          let restoreButton = dropdown.querySelector('[data-menu-action="restore"]');
+          let deleteForeverButton = dropdown.querySelector('[data-menu-action="delete-permanently"]');
+
+          disableInTrash.forEach((action) => {
+            const button = dropdown.querySelector(`[data-menu-action="${action}"]`);
+            if (button) {
+              button.hidden = status === 'trash';
+            }
+          });
+
+          if (trashButton) {
+            trashButton.hidden = status === 'trash';
+          }
+
+          if (status === 'trash') {
+            if (!restoreButton) {
+              restoreButton = createActionMenuButton({
+                action: 'restore',
+                label: 'Restore',
+                icon: 'fa-arrow-rotate-left',
+              });
+              dropdown.insertBefore(restoreButton, trashButton ?? dropdown.firstElementChild);
+            } else {
+              restoreButton.hidden = false;
+            }
+
+            if (!deleteForeverButton) {
+              deleteForeverButton = createActionMenuButton({
+                action: 'delete-permanently',
+                label: 'Delete permanently',
+                icon: 'fa-circle-xmark',
+                destructive: true,
+              });
+              dropdown.append(deleteForeverButton);
+            } else {
+              deleteForeverButton.hidden = false;
+            }
+          } else {
+            if (restoreButton) {
+              restoreButton.hidden = true;
+            }
+            if (deleteForeverButton) {
+              deleteForeverButton.hidden = true;
+            }
+          }
+        });
+      }
+
+      function syncTrashActionsVisibility() {
+        if (!trashActionsBar) {
+          return;
+        }
+        const isTrashView = state.status === 'trash';
+        trashActionsBar.hidden = !isTrashView;
+        trashActionsBar.setAttribute('aria-hidden', isTrashView ? 'false' : 'true');
+      }
+
+      configureActionMenus();
 
       function openDrawer() {
         if (!filtersDrawer) {
@@ -3756,6 +3853,23 @@
           const folderId = toggleButton.dataset.folderToggle;
           if (folderId) {
             setFolderExpanded(folderId, shouldExpand);
+          }
+        });
+      });
+
+      trashActionButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const action = button.dataset.trashAction;
+          if (action === 'restore-all') {
+            const controller = folderActionDialogs['restore-all'];
+            if (controller) {
+              controller.open('trash', { trigger: button });
+            }
+          } else if (action === 'empty') {
+            const controller = folderActionDialogs.empty;
+            if (controller) {
+              controller.open('trash', { trigger: button });
+            }
           }
         });
       });

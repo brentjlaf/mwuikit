@@ -63,6 +63,25 @@
       </div>
 
       <div class="filter-chips" id="filterChips" hidden aria-live="polite"></div>
+      <div class="trash-actions-bar" data-trash-actions hidden aria-hidden="true">
+        <div class="trash-actions-info">
+          <span class="trash-actions-icon" aria-hidden="true"><i class="fa-solid fa-trash-can"></i></span>
+          <div class="trash-actions-copy">
+            <strong>Trash tools</strong>
+            <span>Restore pages or empty the trash when you’re ready.</span>
+          </div>
+        </div>
+        <div class="trash-actions-buttons" role="group" aria-label="Trash actions">
+          <button type="button" class="pill-button" data-trash-action="restore-all">
+            <i class="fa-solid fa-arrow-rotate-left" aria-hidden="true"></i>
+            Restore all
+          </button>
+          <button type="button" class="pill-button danger" data-trash-action="empty">
+            <i class="fa-solid fa-ban" aria-hidden="true"></i>
+            Empty trash
+          </button>
+        </div>
+      </div>
       <div class="bulk-actions-bar" id="bulkActionsBar" aria-hidden="true">
         <div class="bulk-summary">
           <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
